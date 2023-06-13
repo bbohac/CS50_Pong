@@ -14,6 +14,12 @@ function love.load()
     -- and graphics; try removing this function to see the difference!
     love.graphics.setDefaultFilter("nearest", "nearest")
 
+    -- more "retro-looking" font object we can use for any text
+    smallFont = love.graphics.newFont("font.ttf", 8)
+
+    -- set LÖVE2D's active font to the smallFont obect
+    love.graphics.setFont(smallFont)
+
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
         resizable = false,
@@ -37,7 +43,26 @@ end
 function love.draw()
     push:apply("start")
 
-    love.graphics.printf("Hello Pong!", 0, VIRTUAL_HEIGHT / 2 - 6, VIRTUAL_WIDTH, "center")
+    -- clear the screen with a specific color; in this case, a color similar
+    -- to some versions of the original Pong
+    love.graphics.clear(40/255, 45/255, 52/255, 255/255)
+
+    -- draw welcome text towart the top of the screen
+    love.graphics.printf("Hello Pong!", 0, 20, VIRTUAL_WIDTH, "center")
+
+    --
+    -- paddles are simply rectangles we draw on the screen at certain points,
+    -- as is the ball
+    --
+
+    -- render first paddle (left side)
+    love.graphics.rectangle("fill", 10, 30 , 5, 20)
+
+    -- render second paddle (right side)
+    love.graphics.rectangle("fill", VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 50, 5, 20)
+
+    -- render ball (center)
+    love.graphics.rectangle("fill", VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 
     push:apply("end")
 end
