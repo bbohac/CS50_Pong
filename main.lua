@@ -44,6 +44,9 @@ function love.load()
     -- more "retro-looking" font object we can use for any text
     smallFont = love.graphics.newFont("font.ttf", 8)
 
+    -- larger font for drawing the score on the screen
+    scoreFont = love.graphics.newFont("font.ttf", 32)
+
     -- set LÖVE2D's active font to the smallFont obect
     love.graphics.setFont(smallFont)
 
@@ -52,6 +55,11 @@ function love.load()
         resizable = false,
         vsync = true
     })
+
+    -- initialize score variables, used for rendering on the screen and keeping
+    -- track of the winner
+    player1Score = 0
+    player2Score = 0
 
     -- initialize our player paddles; make them global so that they can be
     -- detected by other functions and modules
@@ -140,6 +148,12 @@ function love.draw()
         love.graphics.printf("Hello Play State!", 0, 20, VIRTUAL_WIDTH, "center")
     end
 
+    -- draw score on the left and right center of the screen
+    -- need to switch font to draw before actually printing
+    love.graphics.setFont(scoreFont)
+    love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 50, VIRTUAL_HEIGHT / 3)
+    love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30, VIRTUAL_HEIGHT / 3)
+
     -- render paddles, now using their class's render method
     player1:render()
     player2:render()
@@ -147,5 +161,18 @@ function love.draw()
     -- render ball using its class's render method
     ball:render()
 
+    -- new function just to demonstrate how to see FPS in LÖVE2D
+    displayFPS()
+
     push:apply("end")
+end
+
+--[[
+    Renders the current FPS.
+]]
+function displayFPS()
+    -- simple FPS display across all states
+    love.graphics.setFont(smallFont)
+    love.graphics.setColor(0, 255/255, 0, 255/255)
+    love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 10, 10)
 end
